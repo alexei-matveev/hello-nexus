@@ -1,0 +1,10 @@
+# kubectl apply -k .
+namespace: "hello-nexus"
+namePrefix: ""
+nameSuffix: ""
+resources:
+  - deployment.yaml
+images:
+  - name: "sonatype/nexus3"
+    newName: "sonatype/nexus3"
+    newTag: "3.29.2"

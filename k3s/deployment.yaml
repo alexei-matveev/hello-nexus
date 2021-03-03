@@ -1,0 +1,95 @@
+#
+# kubectl apply -k .
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: nexus-server
+  template:
+    metadata:
+      labels:
+        component: nexus-server
+    spec:
+      # Volumes used by some or all containers of the Pod:
+      volumes:
+      - name: "nexus-data"
+        persistentVolumeClaim:
+          claimName: "nexus-data"
+      containers:
+      - name: nexus-server
+        # docker run -d -p 8081:8081 --name nexus sonatype/nexus3
+        #
+        # Exact version see kustomization.yaml:
+        image: "sonatype/nexus3"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+        volumeMounts:
+        - mountPath: "/nexus-data"
+          name: "nexus-data"
+        env:
+        - name: "XXX"
+          value: "yyy"
+      initContainers:
+      - name: nexus-init
+        image: "sonatype/nexus3"
+        command: ["sh", "-c", "ls -l /d"]
+        # command: ["tail", "-f", "/dev/null"]
+        volumeMounts:
+          - mountPath: "/d"
+            name: "nexus-data"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexus-server
+spec:
+  type: ClusterIP
+  selector:
+    component: nexus-server
+  ports:
+  - port: 8081
+    targetPort: 8081
+---
+#
+# We  assume here  that  *.localhost resolves  to  the local  machine.
+# Following URL should be directed to corresponding Service, also with
+# https:// protocoll:
+#
+#     http://nexus.localhost
+#
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nexus
+spec:
+  rules:
+  - host: nexus.localhost
+    http:
+      paths:
+      - backend:
+          serviceName: nexus-server
+          servicePort: 8081
+---
+# https://github.com/rancher/local-path-provisioner
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  # When you  dont specify  storage class at  all the  default storage
+  # class may be chosen. In k3s with local-path provisioner it is also
+  # the  default one.  Omitted  storageClassName is  not  the same  as
+  # storageClassName = "".
+  # storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+...
