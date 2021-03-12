@@ -7,4 +7,4 @@ resources:
 images:
   - name: "sonatype/nexus3"
     newName: "sonatype/nexus3"
-    newTag: "3.29.2"
+    newTag: "3.30.0"
