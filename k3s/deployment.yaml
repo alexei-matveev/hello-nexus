@@ -63,7 +63,7 @@ spec:
 #
 #     http://nexus.localhost
 #
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nexus
@@ -72,9 +72,13 @@ spec:
   - host: nexus.localhost
     http:
       paths:
-      - backend:
-          serviceName: nexus-server
-          servicePort: 8081
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: nexus-server
+            port:
+              number: 8081
 ---
 # https://github.com/rancher/local-path-provisioner
 apiVersion: v1
