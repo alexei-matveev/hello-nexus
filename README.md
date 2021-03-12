@@ -6,7 +6,8 @@ Assuming you already installed the Token in your local config:
     $ kubectl get nodes
     $ source <(kubectl completion bash)
 
-Siehe Docker [Hub](https://hub.docker.com/r/sonatype/nexus3).
+See  Docker  [Hub](https://hub.docker.com/r/sonatype/nexus3)  for  the
+resent image versions.
 
     $ kubectl create namespace hello-nexus
     $ kubectl config set-context --current --namespace=hello-nexus
