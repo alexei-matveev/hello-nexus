@@ -35,14 +35,6 @@ spec:
         env:
         - name: "XXX"
           value: "yyy"
-      initContainers:
-      - name: nexus-init
-        image: "sonatype/nexus3"
-        command: ["sh", "-c", "ls -l /d"]
-        # command: ["tail", "-f", "/dev/null"]
-        volumeMounts:
-          - mountPath: "/d"
-            name: "nexus-data"
 ---
 apiVersion: v1
 kind: Service
