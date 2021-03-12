@@ -12,4 +12,7 @@ Siehe Docker [Hub](https://hub.docker.com/r/sonatype/nexus3).
     $ kubectl config set-context --current --namespace=hello-nexus
     $ kubectl apply -k k3s/
 
-Then visit the [URL](https://nexus.localhost).
+Then visit  the [URL](https://nexus.localhost). For the  initial admin
+password see
+
+    $ kubectl exec -it nexus-server-xxx -- cat /nexus-data/admin.password
