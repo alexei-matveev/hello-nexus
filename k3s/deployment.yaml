@@ -23,9 +23,7 @@ spec:
       containers:
       - name: nexus-server
         # docker run -d -p 8081:8081 --name nexus sonatype/nexus3
-        #
-        # Exact version see kustomization.yaml:
-        image: "sonatype/nexus3"
+        image: "sonatype/nexus3" # exact version see kustomization.yaml
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8081

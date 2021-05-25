@@ -4,7 +4,8 @@ namePrefix: ""
 nameSuffix: ""
 resources:
   - deployment.yaml
+  # secret.yaml
 images:
   - name: "sonatype/nexus3"
     newName: "sonatype/nexus3"
-    newTag: "3.30.0"
+    newTag: "3.30.1"
